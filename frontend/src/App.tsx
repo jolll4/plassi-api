@@ -1,22 +1,20 @@
-import React, { useState, useEffect} from 'react';
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import './App.css';
+import NavigationBar from "./components/NavigationBar"
+import SeatingOrder from './pages/SeatingOrder';
+import Home from "./pages/Home"
+
 
 function App() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:8000/message")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
-  }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Pakollinen 'moi maailma!'</h1>
-        {message}
-      </header>
-    </div>
+    <Router>
+      <NavigationBar />
+      <Routes>
+        <Route path="seatingOrder" element={<SeatingOrder />}></Route>
+        <Route path="/" element={<Home />}></Route>
+      </Routes>
+      {Home()}
+    </Router>
   );
 }
 

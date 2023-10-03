@@ -12,7 +12,10 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">{message}</header>
+      <header className="App-header">
+        <h1>Pakollinen 'moi maailma!'</h1>
+        {message}
+      </header>
     </div>
   );
 }

@@ -19,3 +19,10 @@
   border: 2px solid;
   border-color: #FFFFFF;
 }
+
+.Table {
+  margin: 2px;
+  padding: 15px;
+  border: 1px dashed;
+  border-color: #96eca8;
+}

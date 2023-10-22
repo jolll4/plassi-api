@@ -32,6 +32,7 @@ function App() {
         <h1>Pakollinen 'moi maailma!'</h1>
         {message}
         <div className="Box">{text}</div>
+        <div className="Table">{text}</div>
       </header>
     </Router>
   );

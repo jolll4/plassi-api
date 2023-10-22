@@ -12,3 +12,10 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.Box {
+  margin: 2px;
+  padding: 5px;
+  border: 2px solid;
+  border-color: #FFFFFF;
+}

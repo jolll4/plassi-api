@@ -1,6 +1,6 @@
 import "../App.css";
 
-function SeatingOrder() {
+function SeatingOrder(): JSX.Element {
   return (
     <div>
       <header className="App-header">

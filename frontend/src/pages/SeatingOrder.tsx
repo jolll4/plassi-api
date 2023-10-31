@@ -1,10 +1,11 @@
-import "../App.css";
+import RenderContent from "../components/RenderContent";
 
 function SeatingOrder(): JSX.Element {
   return (
     <div>
       <header className="App-header">
-        <h2>Vasemmalta oikealle</h2>
+        <label htmlFor={"inputBox"}>Enter your attendees</label>
+        <RenderContent />
       </header>
     </div>
   );

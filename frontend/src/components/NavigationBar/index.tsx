@@ -1,12 +1,14 @@
-import { NavLink as Link } from "react-router-dom";
 import React from "react";
+import { NavLink } from "react-router-dom";
+import "./NavigationBarStyles.css";
 
 class NavigationBar extends React.Component {
   render() {
     return (
       <nav>
-        <Link to="/Home">Main page</Link>
-        <Link to="/SeatingOrder">The Next page</Link>
+        <NavLink to="/">Main page</NavLink>
+        <NavLink to="/SeatingOrder">SeatingOrder</NavLink>
+        <NavLink to="/TextBoxes">TextBoxes</NavLink>
       </nav>
     );
   }

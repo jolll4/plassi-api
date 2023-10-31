@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, useState, useEffect } from "react";
 import "./RenderStyles.css";
 
 type RenderProps = {};
@@ -20,8 +20,20 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
   }
 
   onClick = () => {
-    this.setState({ outputText: this.state.inputText });
+    this.sortSeats();
     this.setState({ showResult: true });
+  };
+
+  sortSeats = () => {
+    fetch("http://localhost:8000/sortPeople", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      body: JSON.stringify({ request: this.state.inputText }),
+    })
+      .then((res) => res.text())
+      .then((res) => this.setState({ outputText: res }))
+      .catch((err) => console.log(err));
   };
 
   render() {

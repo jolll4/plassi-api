@@ -49,7 +49,6 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
           }}
         />
         <br />
-        Input was: <br />
         <button onClick={this.onClick}>Magic</button>
         {this.state.showResult && (
           <div className="Output">{this.state.outputText}</div>

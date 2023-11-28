@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
-import SortPeople from "./seatingOrder/sortPeople";
+import sortPeople from "./seatingOrder/sortPeople";
 
 const app = express();
 const PORT = 8000;
@@ -17,7 +17,7 @@ app.get("/text", (req, res) => {
 });
 
 app.post("/sortPeople", (req, res) => {
-	res.json(SortPeople(req.body));
+	res.json(sortPeople(req.body));
 });
 
 app.listen(PORT, () => {

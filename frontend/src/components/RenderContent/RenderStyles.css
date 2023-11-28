@@ -1,6 +1,6 @@
 .Output {
-	max-width: 300px;
 	overflow-wrap: break-word;
+	white-space: break-spaces;
 }
 
 .ArrangeSideBySide {

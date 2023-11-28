@@ -42,14 +42,23 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
 			}),
 		})
 			.then((res) => res.text())
-			.then((res) => this.setState({ outputText: res }))
+			.then((res) =>
+				this.setState({
+					outputText: res
+						.replaceAll("],[", "\n")
+						.replaceAll("[", "")
+						.replaceAll("]", "")
+						.replaceAll('"', "")
+						.replaceAll(",", " | "),
+				})
+			)
 			.catch((err) => console.log(err));
 	};
 
 	render() {
 		return (
 			<div>
-				<div className="ArrangeSideBySide">
+				<div>
 					<div className="InputBoxElements">
 						<p>Attendees:</p>
 						<textarea
@@ -93,7 +102,6 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
 						/>
 					</div>
 				</div>
-				<br />
 				<button className="BigButton" onClick={this.onClick}>
 					Magic
 				</button>

@@ -1,19 +1,21 @@
+import createSeatingOrder from "./createSeatingOrder";
+
 type WrittenUserInput = {
 	request: string[];
 };
 
-export default function SortPeople(
+export default function sortPeople(
 	inputText: WrittenUserInput
 ): any[] | string {
-	const people: string[] = inputText.request[0].trim().split(/\r?\n/);
-	const groups: string[][] = [];
+	var people: string[] = inputText.request[0].trim().split(/\r?\n/);
+	var groups: string[][] = [];
 	inputText.request[1]
 		.trim()
 		.split(/\r?\n\n/)
 		.forEach((group) => {
 			groups.push(group.split(/\r?\n/));
 		});
-	const avecs: string[][] = [];
+	var avecs: string[][] = [];
 	inputText.request[2]
 		.trim()
 		.split(/\r?\n/)
@@ -21,11 +23,25 @@ export default function SortPeople(
 			avecs.push(avec.split(/\r?;/));
 		});
 
+	people = trimElements(people);
+	groups = trimElements(groups);
+	avecs = trimElements(avecs);
+
 	if (checkForDuplicates(people)) {
 		return "There are duplicate people in the list";
 	}
 
-	return people;
+	return createSeatingOrder(people, groups, avecs);
+}
+
+function trimElements(array: any[]): any[] {
+	return array.map((element) => {
+		if (Array.isArray(element)) {
+			return trimElements(element);
+		} else {
+			return element.trim();
+		}
+	});
 }
 
 function checkForDuplicates(input: string[]): boolean {

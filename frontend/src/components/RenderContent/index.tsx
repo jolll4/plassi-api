@@ -58,7 +58,7 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
 	render() {
 		return (
 			<div>
-				<div className="ArrangeSideBySide">
+				<div>
 					<div className="InputBoxElements">
 						<p>Attendees:</p>
 						<textarea
@@ -102,7 +102,6 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
 						/>
 					</div>
 				</div>
-				<br />
 				<button className="BigButton" onClick={this.onClick}>
 					Magic
 				</button>

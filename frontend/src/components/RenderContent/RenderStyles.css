@@ -1,21 +1,19 @@
 .Output {
 	overflow-wrap: break-word;
 	white-space: break-spaces;
-}
-
-.ArrangeSideBySide {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	margin: 20px;
 }
 
 .InputBoxElements {
-	align-items: center;
-	width: 33%;
+	display: inline-block;
+	text-align: center;
+	width: 500px;
 }
 
 .BigButton {
 	width: 100px;
 	height: 60px;
 	font-size: 20px;
+	margin: 20px;
+	float: right;
 }

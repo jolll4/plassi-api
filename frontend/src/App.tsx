@@ -6,16 +6,16 @@ import TextBoxes from "./pages/TextBoxes";
 import Home from "./pages/Home";
 
 function App() {
-  return (
-    <Router>
-      <NavigationBar />
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="seatingOrder" element={<SeatingOrder />}></Route>
-        <Route path="textBoxes" element={<TextBoxes />}></Route>
-      </Routes>
-    </Router>
-  );
+	return (
+		<Router>
+			<NavigationBar />
+			<Routes>
+				<Route path="/" element={<Home />}></Route>
+				<Route path="seatingOrder" element={<SeatingOrder />}></Route>
+				<Route path="textBoxes" element={<TextBoxes />}></Route>
+			</Routes>
+		</Router>
+	);
 }
 
 export default App;

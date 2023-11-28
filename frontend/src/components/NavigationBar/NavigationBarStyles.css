@@ -1,17 +1,19 @@
 nav {
-  background-color: #dba95d;
-  padding: 13px;
+	background-color: #dba95d;
+	padding: 13px;
 }
 
-a:link, a:visited {
-    background-color: #c9c9c9;
-    color: #303e6b;
-    padding: 2px 5px;
-    margin: 2px;
-    border: 1px solid #000000;
-    border-radius: 5px;
+a:link,
+a:visited {
+	background-color: #c9c9c9;
+	color: #303e6b;
+	padding: 2px 5px;
+	margin: 2px;
+	border: 1px solid #000000;
+	border-radius: 5px;
 }
 
-a:hover, a:active {
-    background-color: #e6e602;
+a:hover,
+a:active {
+	background-color: #e6e602;
 }

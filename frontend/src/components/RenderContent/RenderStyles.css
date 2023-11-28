@@ -1,4 +1,21 @@
 .Output {
-    max-width: 300px;
-    overflow-wrap: break-word;
+	max-width: 300px;
+	overflow-wrap: break-word;
+}
+
+.ArrangeSideBySide {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.InputBoxElements {
+	align-items: center;
+	width: 33%;
+}
+
+.BigButton {
+	width: 100px;
+	height: 60px;
+	font-size: 20px;
 }

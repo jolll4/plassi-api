@@ -4,7 +4,7 @@ function Home(): JSX.Element {
 	const [message, setMessage] = useState("/message");
 
 	useEffect(() => {
-		fetch("http://192.168.1.109:8000/message")
+		fetch("http://localhost:8000/message")
 			.then((res) => res.json())
 			.then((data) => setMessage(data.message));
 	}, []);

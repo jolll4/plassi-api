@@ -2,6 +2,7 @@
 	overflow-wrap: break-word;
 	white-space: break-spaces;
 	margin: 20px;
+	float: right;
 }
 
 .InputBoxElements {

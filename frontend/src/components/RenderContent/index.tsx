@@ -29,7 +29,7 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
 	};
 
 	sortSeats = () => {
-		fetch("http://localhost:8000/sortPeople", {
+		fetch("http://192.168.1.109:8000/sortPeople", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			mode: "cors",

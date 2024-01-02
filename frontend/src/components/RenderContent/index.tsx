@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { formatSeatingOrder } from "./formatSeatingOrder";
 import "./RenderStyles.css";
 
 type RenderProps = {};
@@ -45,11 +46,9 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
 			.then((res) =>
 				this.setState({
 					outputText: res
-						.replaceAll("],[", "\n")
 						.replaceAll("[", "")
 						.replaceAll("]", "")
-						.replaceAll('"', "")
-						.replaceAll(",", " | "),
+						.replaceAll('"', ""),
 				})
 			)
 			.catch((err) => console.log(err));
@@ -106,7 +105,7 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
 					Magic
 				</button>
 				{this.state.showResult && (
-					<div className="Output">{this.state.outputText}</div>
+					<div>{formatSeatingOrder(this.state.outputText)}</div>
 				)}
 			</div>
 		);

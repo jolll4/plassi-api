@@ -77,9 +77,9 @@ function findClosestUnseatedNeighbor(
 function swapEveryOtherSeat(seatingOrder: string[][]): string[][] {
 	return seatingOrder.map((seats, index) => {
 		if (index % 2 == 1) {
-			return (seats = [seats[1], seats[0]]);
+			return (seats = [seats[1] ?? "Empty seat", seats[0] ?? "Empty seat"]);
 		} else {
-			return seats;
+			return (seats = [seats[0] ?? "Empty seat", seats[1] ?? "Empty seat"]);
 		}
 	});
 }

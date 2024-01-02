@@ -10,7 +10,7 @@ function Home(): JSX.Element {
 	}, []);
 
 	return (
-		<div>
+		<div className="Background">
 			<header className="App-header">
 				<h1>Pakollinen 'moi maailma!'</h1>
 				{message}

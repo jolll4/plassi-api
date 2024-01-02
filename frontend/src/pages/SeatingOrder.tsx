@@ -2,7 +2,7 @@ import RenderContent from "../components/RenderContent";
 
 function SeatingOrder(): JSX.Element {
 	return (
-		<div>
+		<div className="Background">
 			<header className="App-header">
 				<label htmlFor={"inputBox"}>Enter your attendees</label>
 				<RenderContent />

@@ -8,24 +8,29 @@ export default function sortPeople(
 	inputText: WrittenUserInput
 ): any[] | string {
 	var people: string[] = inputText.request[0].trim().split(/\r?\n/);
-	var groups: string[][] = [];
-	inputText.request[1]
-		.trim()
-		.split(/\r?\n\n/)
-		.forEach((group) => {
-			groups.push(group.split(/\r?\n/));
-		});
-	var avecs: string[][] = [];
-	inputText.request[2]
-		.trim()
-		.split(/\r?\n/)
-		.forEach((avec) => {
-			avecs.push(avec.split(/\r?;/));
-		});
-
 	people = trimElements(people);
-	groups = trimElements(groups);
-	avecs = trimElements(avecs);
+
+	var groups: string[][] = [];
+	if (inputText.request[1]) {
+		inputText.request[1]
+			.trim()
+			.split(/\r?\n\n/)
+			.forEach((group) => {
+				groups.push(group.split(/\r?\n/));
+			});
+		groups = trimElements(groups);
+	}
+
+	var avecs: string[][] = [];
+	if (inputText.request[2]) {
+		inputText.request[2]
+			.trim()
+			.split(/\r?\n/)
+			.forEach((avec) => {
+				avecs.push(avec.split(/\r?;/));
+			});
+		avecs = trimElements(avecs);
+	}
 
 	if (checkForDuplicates(people)) {
 		return "There are duplicate people in the list";

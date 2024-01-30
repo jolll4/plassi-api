@@ -85,7 +85,7 @@ function findClosestUnseatedNeighbors(
 		const combinedScoresSorted: number[] = [...combinedScores].sort(
 			(a, b) => b - a
 		);
-		for (var i = 0; i < combinedScoresSorted.length; i++) {
+		for (var i = 0; i < combinedScores.length; i++) {
 			if (
 				unSeatedPeople.includes(
 					people[combinedScores.indexOf(combinedScoresSorted[i])]
@@ -152,7 +152,7 @@ function combineArrays(array1: any[], array2: any[]): any[] {
 		return [];
 	}
 	return array1.map((element, index) => {
-		return [element, array2[index]];
+		return [element + array2[index]];
 	});
 }
 
@@ -288,5 +288,7 @@ function maxScoreForPerson(index: number, closenessScores: number[][]): number {
 	maxScore += sortedScores[0] * 2;
 	maxScore += sortedScores[1];
 	maxScore += sortedScores[2];
+	maxScore += sortedScores[3] * 0.5;
+	maxScore += sortedScores[4] * 0.5;
 	return maxScore;
 }

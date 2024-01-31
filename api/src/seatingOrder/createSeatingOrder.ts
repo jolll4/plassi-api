@@ -10,25 +10,13 @@ export default function createSeatingOrder(
 	);
 	const unSeatedPeople: string[] = Object.assign([], people);
 	var seatingOrder: string[][] = [];
-	var nextPerson: string = people[0];
 	while (unSeatedPeople.length > 0) {
-		// if (
-		// 	seatingOrder.length > 0 &&
-		// 	seatingOrder[seatingOrder.length - 1].length == 1
-		// ) {
-		// 	seatingOrder[seatingOrder.length - 1].push(nextPerson);
-		// } else {
-		// 	seatingOrder.push([nextPerson]);
-		// }
-		// unSeatedPeople.splice(unSeatedPeople.indexOf(nextPerson), 1);
 		if (unSeatedPeople.length > 0) {
-			// seatingOrder.push(
 			findClosestUnseatedNeighbors(
 				people,
 				seatingOrder,
 				unSeatedPeople,
 				closenessScores
-				// )
 			);
 		}
 	}
@@ -225,21 +213,25 @@ function calculateSeatingOrderScore(
 				scoreLeft +=
 					closenessScores[people.indexOf(seatLeft)][
 						people.indexOf(seatingOrder[currentIndex - 1][0])
-					] ?? 0;
+					] * 0.5 ?? 0;
 				scoreLeft +=
 					closenessScores[people.indexOf(seatLeft)][
 						people.indexOf(seatingOrder[currentIndex - 1][1])
 					] ?? 0;
 			}
 			if (currentIndex < seatingOrder.length - 1) {
-				scoreLeft +=
-					closenessScores[people.indexOf(seatLeft)][
-						people.indexOf(seatingOrder[currentIndex + 1][0])
-					] ?? 0;
-				scoreLeft +=
-					closenessScores[people.indexOf(seatLeft)][
-						people.indexOf(seatingOrder[currentIndex + 1][1])
-					] ?? 0;
+				if (seatingOrder[currentIndex + 1][0] != "Empty seat") {
+					scoreLeft +=
+						closenessScores[people.indexOf(seatLeft)][
+							people.indexOf(seatingOrder[currentIndex + 1][0])
+						] * 0.5 ?? 0;
+				}
+				if (seatingOrder[currentIndex + 1][1] != "Empty seat") {
+					scoreLeft +=
+						closenessScores[people.indexOf(seatLeft)][
+							people.indexOf(seatingOrder[currentIndex + 1][1])
+						] ?? 0;
+				}
 			}
 		}
 		if (seatRight != "Empty seat") {
@@ -247,36 +239,38 @@ function calculateSeatingOrderScore(
 				scoreRight +=
 					closenessScores[people.indexOf(seatRight)][
 						people.indexOf(seatingOrder[currentIndex - 1][1])
-					] ?? 0;
+					] * 0.5 ?? 0;
 				scoreRight +=
 					closenessScores[people.indexOf(seatRight)][
 						people.indexOf(seatingOrder[currentIndex - 1][0])
 					] ?? 0;
 			}
 			if (currentIndex < seatingOrder.length - 1) {
-				scoreRight +=
-					closenessScores[people.indexOf(seatRight)][
-						people.indexOf(seatingOrder[currentIndex + 1][1])
-					] ?? 0;
-				scoreRight +=
-					closenessScores[people.indexOf(seatRight)][
-						people.indexOf(seatingOrder[currentIndex + 1][0])
-					] ?? 0;
+				if (seatingOrder[currentIndex + 1][1] != "Empty seat") {
+					scoreRight +=
+						closenessScores[people.indexOf(seatRight)][
+							people.indexOf(seatingOrder[currentIndex + 1][1])
+						] * 0.5 ?? 0;
+				}
+				if (seatingOrder[currentIndex + 1][0] != "Empty seat") {
+					scoreRight +=
+						closenessScores[people.indexOf(seatRight)][
+							people.indexOf(seatingOrder[currentIndex + 1][0])
+						] ?? 0;
+				}
 			}
 		}
 		seatingScores[currentIndex] = [
 			seatLeft == "Empty seat"
 				? seatLeft
-				: `${seatLeft}; score: ${scoreLeft}/${maxScoreForPerson(
-						people.indexOf(seatLeft),
-						closenessScores
-				  )}`,
+				: `${seatLeft}; score: ${scoreLeft * 2}/${
+						maxScoreForPerson(people.indexOf(seatLeft), closenessScores) * 2
+				  }`,
 			seatRight == "Empty seat"
 				? seatRight
-				: `${seatRight}; score: ${scoreRight}/${maxScoreForPerson(
-						people.indexOf(seatRight),
-						closenessScores
-				  )}`,
+				: `${seatRight}; score: ${scoreRight * 2}/${
+						maxScoreForPerson(people.indexOf(seatRight), closenessScores) * 2
+				  }`,
 		];
 	});
 	return seatingScores;

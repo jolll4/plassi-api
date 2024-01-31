@@ -8,7 +8,7 @@ class NavigationBar extends React.Component {
 			<nav>
 				<NavLink to="/">Main page</NavLink>
 				<NavLink to="/SeatingOrder">SeatingOrder</NavLink>
-				<NavLink to="/TextBoxes">TextBoxes</NavLink>
+				<NavLink to="/Instructions">Instructions</NavLink>
 			</nav>
 		);
 	}

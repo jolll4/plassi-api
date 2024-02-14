@@ -105,9 +105,16 @@ function findClosestUnseatedNeighbors(
           people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])]
         )
       ) {
-        nextCouple.push(
-          people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])]
-        );
+        if (
+          people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])] !=
+          ""
+        ) {
+          nextCouple.push(
+            people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])]
+          );
+        } else {
+          nextCouple.push("Empty seat");
+        }
         unSeatedPeople.splice(
           unSeatedPeople.indexOf(
             people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])]
@@ -156,12 +163,12 @@ function getCombinedScores(
   }
 }
 
-function combineArrays(array1: any[], array2: any[]): any[] {
+function combineArrays(array1: number[], array2: number[]): any[] {
   if (array1.length == 0) {
     return [];
   }
   return array1.map((element, index) => {
-    return [element + array2[index]];
+    return [1 * element + 1 * array2[index]];
   });
 }
 

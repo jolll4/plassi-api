@@ -46,7 +46,8 @@ export function sortPeopleCsv(inputText: string[][]): any[] | string {
     inputText.map((person) => {
       return person[0];
     })
-  );
+  ).filter(name => name != "");
+
   const avecs: string[][] = [];
 
   inputText.forEach((pair) => {

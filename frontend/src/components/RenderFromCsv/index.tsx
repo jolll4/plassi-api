@@ -7,7 +7,6 @@ type RenderProps = {};
 
 type RenderState = {
   showResult: boolean;
-  uploadedFile: any;
   uploadedData: string[];
   outputText: string;
 };
@@ -17,26 +16,13 @@ export default class RenderFromCsv extends Component<RenderProps, RenderState> {
     super(props);
     this.state = {
       showResult: false,
-      uploadedFile: null,
       uploadedData: [],
       outputText: "",
     };
   }
 
   onFileChange = (event: any) => {
-    this.setState({ uploadedFile: event.target.files[0] });
-  };
-
-  onFileUpload = () => {
-    const formData = new FormData();
-    if (this.state.uploadedFile) {
-      formData.append(
-        "file",
-        this.state.uploadedFile,
-        this.state.uploadedFile.name
-      );
-      this.parseCsv(this.state.uploadedFile);
-    }
+    this.parseCsv(event.target.files[0]);
   };
 
   parseCsv = (file: any) => {
@@ -45,11 +31,11 @@ export default class RenderFromCsv extends Component<RenderProps, RenderState> {
         this.setState({ uploadedData: result.data });
       },
       header: false,
+      skipEmptyLines: true,
     });
   };
 
   onClick = () => {
-    this.onFileUpload();
     this.sortSeats();
     this.setState({ showResult: true });
   };

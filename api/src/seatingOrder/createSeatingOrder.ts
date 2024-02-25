@@ -1,8 +1,13 @@
+import calculateSeatingOrderScore from "./scoreUtils/calculateSeatingOrderScore";
+import swapIfNeeded from "./arrayUtils/swapIfNeeded";
+import combineArrays from "./arrayUtils/combineArrays";
+import getCombinedScores from "./scoreUtils/getCombinedScores";
+
 export default function createSeatingOrder(
   people: string[],
   groups: string[][],
   avecs: string[][]
-): any[] {
+): string[][] {
   const closenessScores: number[][] = calculateClosenessForAll(
     people,
     groups,
@@ -16,7 +21,8 @@ export default function createSeatingOrder(
         people,
         seatingOrder,
         unSeatedPeople,
-        closenessScores
+        closenessScores,
+        avecs
       );
     }
   }
@@ -60,7 +66,8 @@ function findClosestUnseatedNeighbors(
   people: string[],
   seatingOrder: string[][],
   unSeatedPeople: string[],
-  closenessScores: number[][]
+  closenessScores: number[][],
+  avecs: string[][]
 ): void {
   const nextCouple: string[] = [];
   var scoresForSecondPick: number[] = [];
@@ -103,6 +110,11 @@ function findClosestUnseatedNeighbors(
       if (
         unSeatedPeople.includes(
           people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])]
+        ) &&
+        !hasUnseatedAvec(
+          people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])],
+          avecs,
+          unSeatedPeople
         )
       ) {
         if (
@@ -133,184 +145,18 @@ function findClosestUnseatedNeighbors(
   }
 }
 
-function getCombinedScores(
-  people: string[],
-  seatingOrder: string[][],
-  closenessScores: number[][]
-): number[] {
-  const scoresLeft: number[] =
-    closenessScores[people.indexOf(seatingOrder[seatingOrder.length - 1][0])];
-  const scoresRight: number[] =
-    closenessScores[people.indexOf(seatingOrder[seatingOrder.length - 1][1])];
-
-  if (seatingOrder.length < 2) {
-    return combineArrays(scoresLeft, scoresRight);
-  } else {
-    const scoreLeftDistanceTwo: number[] =
-      closenessScores[people.indexOf(seatingOrder[seatingOrder.length - 2][0])];
-    const scoreRightDistanceTwo: number[] =
-      closenessScores[people.indexOf(seatingOrder[seatingOrder.length - 2][1])];
-
-    return combineArrays(
-      combineArrays(
-        scoresLeft,
-        scoreLeftDistanceTwo.map((score) => score * 0.25)
-      ),
-      combineArrays(scoresRight, scoreRightDistanceTwo).map(
-        (score) => score * 0.25
-      )
-    );
-  }
-}
-
-function combineArrays(array1: number[], array2: number[]): any[] {
-  if (array1.length == 0) {
-    return [];
-  }
-  return array1.map((element, index) => {
-    return [1 * element + 1 * array2[index]];
-  });
-}
-
-function swapIfNeeded(
-  people: string[],
-  seatingOrder: string[][],
-  closenessScores: number[][]
-): void {
-  const latestIndex: number = seatingOrder.length - 1;
-  const previousLeftIndex: number = people.indexOf(
-    seatingOrder[latestIndex - 1][0]
-  );
-  const previousRightIndex: number = people.indexOf(
-    seatingOrder[latestIndex - 1][1]
-  );
-  const currentLeftIndex: number = people.indexOf(seatingOrder[latestIndex][0]);
-  const currentRightIndex: number = people.indexOf(
-    seatingOrder[latestIndex][1]
-  );
-  if (seatingOrder[latestIndex][1] != "Empty seat") {
+function hasUnseatedAvec(
+  person: string,
+  avecs: string[][],
+  unseatedPeople: string[]
+): boolean {
+  for (var i = 0; i < avecs.length; i++) {
     if (
-      (closenessScores[previousLeftIndex][currentLeftIndex] <
-        closenessScores[previousRightIndex][currentLeftIndex] ||
-        closenessScores[previousRightIndex][currentRightIndex] <
-          closenessScores[previousLeftIndex][currentRightIndex]) &&
-      closenessScores[previousLeftIndex][currentRightIndex] >=
-        closenessScores[previousRightIndex][currentRightIndex] &&
-      closenessScores[previousRightIndex][currentLeftIndex] >=
-        closenessScores[previousLeftIndex][currentLeftIndex]
+      (avecs[i][0] == person && unseatedPeople.includes(avecs[i][1])) ||
+      (avecs[i][1] == person && unseatedPeople.includes(avecs[i][0]))
     ) {
-      seatingOrder[latestIndex] = [
-        seatingOrder[latestIndex][1],
-        seatingOrder[latestIndex][0],
-      ];
-    }
-  } else {
-    if (
-      closenessScores[previousLeftIndex][currentLeftIndex] <
-      closenessScores[previousRightIndex][currentLeftIndex]
-    ) {
-      seatingOrder[latestIndex] = [
-        seatingOrder[latestIndex][1],
-        seatingOrder[latestIndex][0],
-      ];
+      return true;
     }
   }
-}
-
-function calculateSeatingOrderScore(
-  seatingOrder: string[][],
-  closenessScores: number[][],
-  people: string[]
-): string[][] {
-  const seatingScores: string[][] = new Array(seatingOrder.length)
-    .fill(0)
-    .map(() => new Array(people.length).fill(0));
-  seatingOrder.forEach(([seatLeft, seatRight], currentIndex) => {
-    var scoreLeft: number = 0;
-    var scoreRight: number = 0;
-    if (seatLeft != "Empty seat" && seatRight != "Empty seat") {
-      scoreLeft +=
-        closenessScores[people.indexOf(seatLeft)][people.indexOf(seatRight)] *
-          2 ?? 0;
-      scoreRight +=
-        closenessScores[people.indexOf(seatRight)][people.indexOf(seatLeft)] *
-          2 ?? 0;
-    }
-    if (seatLeft != "Empty seat") {
-      if (currentIndex > 0) {
-        scoreLeft +=
-          closenessScores[people.indexOf(seatLeft)][
-            people.indexOf(seatingOrder[currentIndex - 1][0])
-          ] * 0.5 ?? 0;
-        scoreLeft +=
-          closenessScores[people.indexOf(seatLeft)][
-            people.indexOf(seatingOrder[currentIndex - 1][1])
-          ] ?? 0;
-      }
-      if (currentIndex < seatingOrder.length - 1) {
-        if (seatingOrder[currentIndex + 1][0] != "Empty seat") {
-          scoreLeft +=
-            closenessScores[people.indexOf(seatLeft)][
-              people.indexOf(seatingOrder[currentIndex + 1][0])
-            ] * 0.5 ?? 0;
-        }
-        if (seatingOrder[currentIndex + 1][1] != "Empty seat") {
-          scoreLeft +=
-            closenessScores[people.indexOf(seatLeft)][
-              people.indexOf(seatingOrder[currentIndex + 1][1])
-            ] ?? 0;
-        }
-      }
-    }
-    if (seatRight != "Empty seat") {
-      if (currentIndex > 0) {
-        scoreRight +=
-          closenessScores[people.indexOf(seatRight)][
-            people.indexOf(seatingOrder[currentIndex - 1][1])
-          ] * 0.5 ?? 0;
-        scoreRight +=
-          closenessScores[people.indexOf(seatRight)][
-            people.indexOf(seatingOrder[currentIndex - 1][0])
-          ] ?? 0;
-      }
-      if (currentIndex < seatingOrder.length - 1) {
-        if (seatingOrder[currentIndex + 1][1] != "Empty seat") {
-          scoreRight +=
-            closenessScores[people.indexOf(seatRight)][
-              people.indexOf(seatingOrder[currentIndex + 1][1])
-            ] * 0.5 ?? 0;
-        }
-        if (seatingOrder[currentIndex + 1][0] != "Empty seat") {
-          scoreRight +=
-            closenessScores[people.indexOf(seatRight)][
-              people.indexOf(seatingOrder[currentIndex + 1][0])
-            ] ?? 0;
-        }
-      }
-    }
-    seatingScores[currentIndex] = [
-      seatLeft == "Empty seat"
-        ? seatLeft
-        : `${seatLeft}; score: ${scoreLeft * 2}/${
-            maxScoreForPerson(people.indexOf(seatLeft), closenessScores) * 2
-          }`,
-      seatRight == "Empty seat"
-        ? seatRight
-        : `${seatRight}; score: ${scoreRight * 2}/${
-            maxScoreForPerson(people.indexOf(seatRight), closenessScores) * 2
-          }`,
-    ];
-  });
-  return seatingScores;
-}
-
-function maxScoreForPerson(index: number, closenessScores: number[][]): number {
-  var maxScore: number = 0;
-  const sortedScores: number[] = closenessScores[index].sort((a, b) => b - a);
-  maxScore += sortedScores[0] * 2;
-  maxScore += sortedScores[1];
-  maxScore += sortedScores[2];
-  maxScore += sortedScores[3] * 0.5;
-  maxScore += sortedScores[4] * 0.5;
-  return maxScore;
+  return false;
 }

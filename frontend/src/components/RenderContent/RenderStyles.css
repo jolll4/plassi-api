@@ -1,36 +1,36 @@
 .InputBoxContainer {
-	width: 80%;
-	margin: auto;
-	padding: 20px;
+  width: 80%;
+  margin: auto;
+  padding: 20px;
 }
 
 .InputBoxElements {
-	display: inline-block;
-	text-align: center;
-	width: 500px;
+  display: inline-block;
+  text-align: center;
+  width: 500px;
 }
 
 .BigButton {
-	width: 100px;
-	height: 60px;
-	font-size: 20px;
-	margin: 20px;
+  width: 100px;
+  height: 60px;
+  font-size: 20px;
+  margin: 20px;
 }
 
 .RectangleTable {
-	width: 80%;
-	max-width: 1500px;
-	margin: auto;
-	padding: 20px;
+  width: 80%;
+  max-width: 1500px;
+  margin: auto;
+  padding: 20px;
 }
 
 .RectangleSeat {
-	display: flex;
-	box-sizing: border-box;
-	width: calc(50% - 2 * 2px);
-	height: auto;
-	float: left;
-	margin: 2px;
-	background-color: #c9c9c9;
-	color: #000000;
+  display: flex;
+  box-sizing: border-box;
+  width: calc(50% - 2 * 2px);
+  height: auto;
+  float: left;
+  margin: 2px;
+  background-color: #c9c9c9;
+  color: #000000;
 }

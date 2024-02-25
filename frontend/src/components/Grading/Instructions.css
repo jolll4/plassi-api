@@ -1,0 +1,21 @@
+.SolidBox {
+  margin: 2px;
+  padding: 5px;
+  border: 2px solid;
+  border-color: #ffffff;
+  width: 30%;
+}
+
+.DashedBox {
+  margin: 2px;
+  padding: 5px;
+  border: 2px dashed;
+  border-color: #96eca8;
+  width: 30%;
+}
+
+.SideBySide {
+  display: flex;
+  text-align: center;
+  padding: 0 15px 0 15px;
+}

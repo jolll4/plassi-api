@@ -107,34 +107,28 @@ function findClosestUnseatedNeighbors(
 
   if (unSeatedPeople.length > 0) {
     for (var i = 0; i < scoresForSecondPickSorted.length; i++) {
-      if (
-        unSeatedPeople.includes(
-          people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])]
-        ) &&
-        !hasUnseatedAvec(
-          people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])],
-          avecs,
-          unSeatedPeople
+      const peopleWithTheSameScoreIndexes: number[] = scoresForSecondPick
+        .map((score, index) =>
+          score == scoresForSecondPickSorted[i] ? index : -1
         )
-      ) {
+        .filter((index) => index != -1);
+      peopleWithTheSameScoreIndexes.forEach((position) => {
         if (
-          people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])] !=
-          ""
+          unSeatedPeople.includes(people[position]) &&
+          !hasUnseatedAvec(people[position], avecs, unSeatedPeople)
         ) {
-          nextCouple.push(
-            people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])]
-          );
-        } else {
-          nextCouple.push("Empty seat");
+          if (people[position] != "") {
+            nextCouple.push(people[position]);
+          } else {
+            nextCouple.push("Empty seat");
+          }
+          unSeatedPeople.splice(unSeatedPeople.indexOf(people[position]), 1);
         }
-        unSeatedPeople.splice(
-          unSeatedPeople.indexOf(
-            people[scoresForSecondPick.indexOf(scoresForSecondPickSorted[i])]
-          ),
-          1
-        );
+      });
+      if (nextCouple.length == 2) {
         break;
       }
+      i += peopleWithTheSameScoreIndexes.length - 1;
     }
   } else {
     nextCouple.push("Empty seat");

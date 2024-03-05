@@ -46,7 +46,7 @@ export function sortPeopleCsv(inputText: string[][]): any[] | string {
     inputText.map((person) => {
       return person[0];
     })
-  ).filter(name => name != "");
+  ).filter((name) => name != "");
 
   const avecs: string[][] = [];
 
@@ -106,12 +106,17 @@ function checkForDuplicates(input: string[]): boolean {
 function createGroups(people: string[], groupData: string[]): string[][] {
   const namedGroups: NamedGroup = {};
   groupData.forEach((group, index) => {
-    if (people.includes(group) && !namedGroups[`${people[index]}_${group}`]) {
-      namedGroups[`${group}_${people[index]}`] = [group, people[index]];
-    }
     if (group && group != "") {
       group.split(";").map((element) => {
-        if (element && namedGroups[element.trim()]) {
+        if (
+          people.includes(element.trim()) &&
+          !namedGroups[`${people[index]}_${element.trim()}`]
+        ) {
+          namedGroups[`${element.trim()}_${people[index]}`] = [
+            element.trim(),
+            people[index],
+          ];
+        } else if (element && namedGroups[element.trim()]) {
           namedGroups[element.trim()].push(people[index]);
         } else if (element) {
           namedGroups[element.trim()] = [people[index]];

@@ -12,4 +12,10 @@ For the frontend, go to `./frontend` and run `yarn start`. The server has to be 
 
 To run the backend express app, go to `./api` and run `yarn build` and `yarn start`.
 
-To run the backend django app, go to networkApi and run `.\venv\Scripts\activate`, then `python manage.py runserver`.
+To run the backend django app, go to networkApi and run
+
+1. `python -m venv env` [for first time setup]
+2. `source env/bin/activate`
+3. `pip install -r requirements.txt`
+
+, then `python manage.py runserver`.

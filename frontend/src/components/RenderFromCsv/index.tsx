@@ -2,6 +2,7 @@ import { Component } from "react";
 import Papa from "papaparse";
 import { formatSeatingOrder } from "../RenderContent/formatSeatingOrder";
 import "../RenderContent/RenderStyles.css";
+// import Cookies from "js-cookie";
 
 type RenderProps = {};
 
@@ -20,6 +21,8 @@ export default class RenderFromCsv extends Component<RenderProps, RenderState> {
       outputText: "",
     };
   }
+
+  // csrftoken = Cookies.get("csrftoken");
 
   onFileChange = (event: any) => {
     this.parseCsv(event.target.files[0]);
@@ -42,20 +45,25 @@ export default class RenderFromCsv extends Component<RenderProps, RenderState> {
 
   sortSeats = () => {
     fetch("http://localhost:8000/sortPeopleCsv", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      // credentials: "include",
+      method: "post",
+      headers: {
+        // "X-CSRFToken": this.csrftoken!,
+        "Content-Type": "application/json",
+      },
       mode: "cors",
       body: JSON.stringify(this.state.uploadedData),
     })
       .then((res) => res.text())
-      .then((res) =>
+      .then((res) => {
+        console.log(res);
         this.setState({
           outputText: res
             .replaceAll("[", "")
             .replaceAll("]", "")
             .replaceAll('"', ""),
-        })
-      )
+        });
+      })
       .catch((err) => console.log(err));
   };
 
@@ -63,7 +71,7 @@ export default class RenderFromCsv extends Component<RenderProps, RenderState> {
     return (
       <div>
         <div>
-          <input type="file" onChange={this.onFileChange} />
+          <input type="file" accept=".csv" onChange={this.onFileChange} />
         </div>
         <button className="BigButton" onClick={this.onClick}>
           Magic

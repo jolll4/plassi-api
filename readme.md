@@ -17,5 +17,4 @@ To run the backend django app, go to networkApi and run
 1. `python -m venv env` [for first time setup]
 2. `source env/bin/activate`
 3. `pip install -r requirements.txt`
-
-, then `python manage.py runserver`.
+4. `python manage.py runserver`.

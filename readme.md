@@ -10,11 +10,11 @@ For the frontend, go to `./frontend` and run `yarn start`. The server has to be 
 
 ### For the backend, run only one of the following:
 
-To run the backend express app, go to `./api` and run `yarn build` and `yarn start`.
-
 To run the backend django app, go to networkApi and run
 
 1. `python -m venv env` [for first time setup]
-2. `source env/bin/activate`
+2. `source env/bin/activate` on linux or `env\Scripts\Activate.ps1` on windows
 3. `pip install -r requirements.txt`
 4. `python manage.py runserver`.
+
+To run the backend express app, go to `./api` and run `yarn build` and `yarn start`.

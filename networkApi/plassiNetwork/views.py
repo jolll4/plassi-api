@@ -18,5 +18,4 @@ class SeatPeople(View):
 
 class SeatPeopleCsv(View):
     def post(self, request):
-        print(create_seating_order(request.body))
         return JsonResponse(create_seating_order(request.body), safe=False)

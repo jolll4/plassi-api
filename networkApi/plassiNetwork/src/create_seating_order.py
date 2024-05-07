@@ -45,19 +45,40 @@ def cleanAvecs(avecs: list):
 
 def seatGroups(network):
   seatings = []
-  for group in list(nx.connected_components(network)):
-    seatings = seatPeople(group, seatings)
+  for group in nx.connected_components(network):
+    seatings = seatPeople(network.subgraph(group), seatings)
   
   return seatings
 
-def seatPeople(people: list, seatings: list = []):
-  for person in people:
-    if seatings == [] or len(seatings[len(seatings) - 1]) > 1:
-      seatings.append([person])
-    else:
-      seatings[len(seatings) - 1].append(person)
+def seatPeople(subgraph, seatings: list):
+  largest_clique = nx.approximation.max_clique(subgraph)
+  cliques = nx.find_cliques(subgraph)
+  
+  seatings = seat(list(largest_clique), seatings)
+
+  remaining = []
+  for clique in cliques:
+    for node in clique:
+      toAdd = True
+      for pair in seatings:
+        if node in pair:
+          toAdd = False
+          break
+      if toAdd:
+        remaining.append(node)
+
+  seatings = seat(remaining, seatings)
 
   return seatings
+
+def seat(people: list, seatings: list):
+    for person in people:
+      if seatings == [] or len(seatings[len(seatings) - 1]) > 1:
+        seatings.append([person])
+      else:
+        seatings[len(seatings) - 1].append(person)
+
+    return seatings
 
 def draw_network(G):
     pos = nx.spring_layout(G, seed=0)

@@ -14,7 +14,7 @@ def create_edgeless_network(people):
 
 def add_avecs(avecs):
     for i, j in avecs:
-        G.add_edge(i,j,weight=10)
+        G.add_edge(i,j,weight=10.0)
 
 def add_groups(people: list, groups: list):
     for i in range(len(people)):
@@ -25,7 +25,7 @@ def add_groups(people: list, groups: list):
                         if group1.rstrip() == group2.rstrip():
                             if (G.has_edge(people[i],
                                         people[j])):
-                                G[people[i]][people[j]]["weight"] += 1
+                                G[people[i]][people[j]]["weight"] += 1.0/(groups[i].index(group1.rstrip())+1.0)
                             else:
                                 G.add_edge(people[i],
-                                        people[j], weight=1)
+                                        people[j], weight=1.0/(groups[i].index(group1.rstrip())+1.0))

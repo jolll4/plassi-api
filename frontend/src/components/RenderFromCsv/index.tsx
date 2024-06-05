@@ -42,20 +42,23 @@ export default class RenderFromCsv extends Component<RenderProps, RenderState> {
 
   sortSeats = () => {
     fetch("http://localhost:8000/sortPeopleCsv", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
       mode: "cors",
       body: JSON.stringify(this.state.uploadedData),
     })
       .then((res) => res.text())
-      .then((res) =>
+      .then((res) => {
+        console.log(res);
         this.setState({
           outputText: res
             .replaceAll("[", "")
             .replaceAll("]", "")
             .replaceAll('"', ""),
-        })
-      )
+        });
+      })
       .catch((err) => console.log(err));
   };
 
@@ -63,7 +66,7 @@ export default class RenderFromCsv extends Component<RenderProps, RenderState> {
     return (
       <div>
         <div>
-          <input type="file" onChange={this.onFileChange} />
+          <input type="file" accept=".csv" onChange={this.onFileChange} />
         </div>
         <button className="BigButton" onClick={this.onClick}>
           Magic

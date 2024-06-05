@@ -4,4 +4,17 @@ The app uses yarn for package management. Run `yarn install` for both the `./api
 
 ## Running the app
 
-To run the backend express app, go to `./api` and run `yarn build` and `yarn start`. For the frontend, go to `./frontend` and run `yarn start`.
+### Frontend
+
+For the frontend, go to `./frontend` and run `yarn start`. The server has to be restarted when making changes.
+
+### For the backend, run only one of the following:
+
+To run the backend django app, go to networkApi and run
+
+1. `python -m venv env` [for first time setup]
+2. `source env/bin/activate` on linux or `env\Scripts\Activate.ps1` on windows
+3. `pip install -r requirements.txt`
+4. `python manage.py runserver`.
+
+To run the backend express app, go to `./api` and run `yarn build` and `yarn start`.

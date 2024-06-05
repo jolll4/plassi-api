@@ -21,5 +21,5 @@ app.post("/sortPeopleCsv", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${8000}.`);
+  console.log(`Server is running on port ${PORT}.`);
 });

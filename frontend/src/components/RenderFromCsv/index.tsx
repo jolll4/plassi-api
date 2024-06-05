@@ -2,7 +2,6 @@ import { Component } from "react";
 import Papa from "papaparse";
 import { formatSeatingOrder } from "../RenderContent/formatSeatingOrder";
 import "../RenderContent/RenderStyles.css";
-// import Cookies from "js-cookie";
 
 type RenderProps = {};
 
@@ -21,8 +20,6 @@ export default class RenderFromCsv extends Component<RenderProps, RenderState> {
       outputText: "",
     };
   }
-
-  // csrftoken = Cookies.get("csrftoken");
 
   onFileChange = (event: any) => {
     this.parseCsv(event.target.files[0]);
@@ -45,10 +42,8 @@ export default class RenderFromCsv extends Component<RenderProps, RenderState> {
 
   sortSeats = () => {
     fetch("http://localhost:8000/sortPeopleCsv", {
-      // credentials: "include",
       method: "post",
       headers: {
-        // "X-CSRFToken": this.csrftoken!,
         "Content-Type": "application/json",
       },
       mode: "cors",

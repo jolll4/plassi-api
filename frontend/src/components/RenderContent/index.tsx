@@ -45,10 +45,7 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
       .then((res) => res.text())
       .then((res) =>
         this.setState({
-          outputText: res
-            .replaceAll("[", "")
-            .replaceAll("]", "")
-            .replaceAll('"', ""),
+          outputText: res,
         })
       )
       .catch((err) => console.log(err));

@@ -1,80 +1,76 @@
-import { Component } from "react";
 import Papa from "papaparse";
 import { formatSeatingOrder } from "../RenderContent/formatSeatingOrder";
 import "../RenderContent/RenderStyles.css";
+import { store, newSeats } from "../../App";
+import { useAppDispatch } from "../../hooks";
+import React from "react";
 
-type RenderProps = {};
+export default function RenderFromCsv() {
+  const [showResult, setShowResult] = React.useState<boolean>(false);
+  const [uploadedData, setUploadedData] = React.useState<string>("");
+  const [outputData, setOutputData] = React.useState<string>("");
+  const dispatch = useAppDispatch();
 
-type RenderState = {
-  showResult: boolean;
-  uploadedData: string[];
-  outputText: string;
-};
-
-export default class RenderFromCsv extends Component<RenderProps, RenderState> {
-  constructor(props: RenderProps) {
-    super(props);
-    this.state = {
-      showResult: false,
-      uploadedData: [],
-      outputText: "",
-    };
-  }
-
-  onFileChange = (event: any) => {
-    this.parseCsv(event.target.files[0]);
+  const onFileChange = (event: any) => {
+    parseCsv(event.target.files[0]);
   };
 
-  parseCsv = (file: any) => {
+  const parseCsv = (file: any) => {
     Papa.parse(file, {
       complete: (result: any) => {
-        this.setState({ uploadedData: result.data });
+        setUploadedData(result.data);
       },
       header: false,
       skipEmptyLines: true,
     });
   };
 
-  onClick = () => {
-    this.sortSeats();
-    this.setState({ showResult: true });
+  const createSeating = async () => {
+    await sortSeats();
+    setOutputData(await getOutputData());
+    setShowResult(true);
   };
 
-  sortSeats = () => {
-    fetch("http://localhost:8000/sortPeopleCsv", {
+  const toggleResults = async () => {
+    setOutputData(await getOutputData());
+    setShowResult(!showResult);
+  };
+
+  const getOutputData = async (index: number = -1) => {
+    return (await store.getState().seats.values.at(index)) ?? "";
+  };
+
+  const sortSeats = async () => {
+    await fetch("http://localhost:8000/sortPeopleCsv", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
       },
       mode: "cors",
-      body: JSON.stringify(this.state.uploadedData),
+      body: JSON.stringify(uploadedData),
     })
       .then((res) => res.text())
       .then((res) => {
-        console.log(res);
-        this.setState({
-          outputText: res
-            .replaceAll("[", "")
-            .replaceAll("]", "")
-            .replaceAll('"', ""),
-        });
+        dispatch(newSeats(res));
+        console.log(store.getState().seats);
       })
       .catch((err) => console.log(err));
   };
 
-  render() {
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <input type="file" accept=".csv" onChange={this.onFileChange} />
-        </div>
-        <button className="BigButton" onClick={this.onClick}>
+        <input type="file" accept=".csv" onChange={onFileChange} />
+      </div>
+      <div className="ButtonContainer">
+        <button className="BigButton" onClick={createSeating}>
           Magic
         </button>
-        {this.state.showResult && (
-          <div>{formatSeatingOrder(this.state.outputText)}</div>
-        )}
+        <button className="BigButton" onClick={toggleResults}>
+          Toggle results
+        </button>
       </div>
-    );
-  }
+      {showResult && <div>{formatSeatingOrder(outputData)}</div>}
+    </div>
+  );
 }

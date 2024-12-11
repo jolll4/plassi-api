@@ -17,6 +17,10 @@
   margin: 20px;
 }
 
+.ButtonContainer {
+  display: flex;
+}
+
 .RectangleTable {
   width: 80%;
   max-width: 1500px;

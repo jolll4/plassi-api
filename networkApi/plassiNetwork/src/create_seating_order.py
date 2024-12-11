@@ -59,12 +59,9 @@ def seatPeople(subgraph, seatings: list):
   remaining = []
   for clique in cliques:
     for node in clique:
-      toAdd = True
-      for pair in seatings:
-        if node in pair:
-          toAdd = False
-          break
-      if toAdd:
+      found = [ pair for pair in seatings if node in pair]
+
+      if len(found) == 0 and node not in remaining:
         remaining.append(node)
 
   seatings = seat(remaining, seatings)

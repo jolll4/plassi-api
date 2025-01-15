@@ -59,7 +59,7 @@ def seatPeople(subgraph, seatings: list):
 
   for clique in cliques:
     remaining = []
-    color = random_color()
+    color = random_color_and_shape()
     for node in clique:
       found = False
       for pair in seatings:
@@ -93,5 +93,6 @@ def draw_network(G):
     plt.show()
     plt.close()
 
-def random_color():
-    return "#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
+def random_color_and_shape():
+    return ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]),
+            random.choice(["triangle", "triangle-down", "circle", "square"])]

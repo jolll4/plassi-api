@@ -39,10 +39,37 @@
   color: #000000;
 }
 
-.GroupIndicator {
+.Circle {
   margin: auto 0 auto 0.2em;
   height: 25px;
   width: 25px;
   border-radius: 50%;
+  display: inline-block;
+}
+
+.Square {
+  margin: auto 0 auto 0.2em;
+  height: 25px;
+  width: 25px;
+  display: inline-block;
+}
+
+.Triangle {
+  margin: auto 0 auto 0.2em;
+  width: 0;
+  height: 0;
+  border-left: 12.5px solid transparent;
+  border-right: 12.5px solid transparent;
+  border-bottom: 25px solid;
+  display: inline-block;
+}
+
+.TriangleDown {
+  margin: auto 0 auto 0.2em;
+  width: 0;
+  height: 0;
+  border-left: 12.5px solid transparent;
+  border-right: 12.5px solid transparent;
+  border-top: 25px solid;
   display: inline-block;
 }

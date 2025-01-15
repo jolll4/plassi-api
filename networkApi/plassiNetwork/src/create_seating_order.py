@@ -4,16 +4,14 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import io
 import random
+import json
 
 def create_seating_order(inputData):
   people = []
   avecs  = []
   groups = []
 
-  cleanedInputData = inputData.decode().replace("[[", "").replace("]]", "").split("],[")
-  data = []
-  for row in cleanedInputData:
-    data.append(row.replace('"', "").split(","))
+  data = json.loads(inputData)
 
   for row in data:
     people.append(row[0].rstrip())
@@ -95,4 +93,4 @@ def draw_network(G):
 
 def random_color_and_shape():
     return ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]),
-            random.choice(["triangle", "triangle-down", "circle", "square"])]
+            random.choice([ "circle", "square", "triangle", "triangle-down"])]

@@ -52,7 +52,6 @@ export default function RenderFromCsv() {
       .then((res) => res.text())
       .then((res) => {
         dispatch(newSeats(res));
-        console.log(store.getState().seats);
       })
       .catch((err) => console.log(err));
   };

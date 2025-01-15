@@ -2,16 +2,16 @@ from .create_network import create_network
 
 import networkx as nx
 import matplotlib.pyplot as plt
+import io
+import random
+import json
 
 def create_seating_order(inputData):
   people = []
   avecs  = []
   groups = []
 
-  cleanedInputData = inputData.decode().replace("[[", "").replace("]]", "").split("],[")
-  data = []
-  for row in cleanedInputData:
-    data.append(row.replace('"', "").split(","))
+  data = json.loads(inputData)
 
   for row in data:
     people.append(row[0].rstrip())
@@ -29,6 +29,8 @@ def create_seating_order(inputData):
       testOrder[len(testOrder) - 1].append(person)
 
   network = create_network(people, avecs, groups)
+
+  # draw_network(network)
 
   return seatGroups(network)
 
@@ -51,29 +53,33 @@ def seatGroups(network):
   return seatings
 
 def seatPeople(subgraph, seatings: list):
-  largest_clique = nx.approximation.max_clique(subgraph)
   cliques = nx.find_cliques(subgraph)
-  
-  seatings = seat(list(largest_clique), seatings)
 
-  remaining = []
   for clique in cliques:
+    remaining = []
+    color = random_color_and_shape()
     for node in clique:
-      found = [ pair for pair in seatings if node in pair]
+      found = False
+      for pair in seatings:
+        for person in pair:
+          if person[0] == node:
+            found = True
+            person[1].append(color)
 
-      if len(found) == 0 and node not in remaining:
+      if not found and node not in remaining:
         remaining.append(node)
 
-  seatings = seat(remaining, seatings)
+    seatings = seat(remaining, seatings, color)
 
   return seatings
 
-def seat(people: list, seatings: list):
+def seat(people: list, seatings: list, color):
     for person in people:
+      person_color = [person, [color]]
       if seatings == [] or len(seatings[len(seatings) - 1]) > 1:
-        seatings.append([person])
+        seatings.append([person_color])
       else:
-        seatings[len(seatings) - 1].append(person)
+        seatings[len(seatings) - 1].append(person_color)
 
     return seatings
 
@@ -81,4 +87,10 @@ def draw_network(G):
     pos = nx.spring_layout(G, seed=0)
     nx.draw_networkx_nodes(G, pos, node_size=10)
     nx.draw_networkx_edges(G, pos, width=0.1)
+    nx.draw_networkx_labels(G, pos)
     plt.show()
+    plt.close()
+
+def random_color_and_shape():
+    return ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]),
+            random.choice([ "circle", "square", "triangle", "triangle-down"])]

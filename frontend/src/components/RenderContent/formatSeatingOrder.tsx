@@ -6,7 +6,6 @@ export function formatSeatingOrder(seatingOrder: string): JSX.Element {
     const seats = JSON.parse(seatingOrder);
     seats.forEach((pair: any[]) => {
       pair.forEach((person) => {
-        console.log(person);
         formattedSeatingOrder.push(
           <div key={`seat_${person[0].trim()}`} className="RectangleSeat">
             {person[0].trim()}

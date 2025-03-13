@@ -73,3 +73,7 @@
   border-top: 25px solid;
   display: inline-block;
 }
+
+.RedHighlight {
+  color: #aa0000;
+}

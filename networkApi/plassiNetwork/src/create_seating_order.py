@@ -2,7 +2,6 @@ from .create_network import create_network
 
 import networkx as nx
 import matplotlib.pyplot as plt
-import io
 import random
 import json
 
@@ -46,6 +45,8 @@ def cleanAvecs(avecs: list):
   return avecs
 
 def seatGroups(network):
+  global color_seed
+  color_seed = random.randrange(4)
   seatings = []
   for group in nx.connected_components(network):
     seatings = seatPeople(network.subgraph(group), seatings)
@@ -53,25 +54,56 @@ def seatGroups(network):
   return seatings
 
 def seatPeople(subgraph, seatings: list):
-  cliques = nx.find_cliques(subgraph)
+  cliques = list(nx.find_cliques(subgraph))
+
+  degree_centrality = nx.degree_centrality(subgraph)
+  lowest_centralities = {key:val for key,val in degree_centrality.items() if val == min(degree_centrality.values())}
+  lowest_centrality_node = list(lowest_centralities.keys())[0]
+
+  for i in range(len(cliques)):
+    if lowest_centrality_node in cliques[i]:
+      seat_clique(cliques[i], seatings)
+      cliques.pop(i)
+      break
 
   for clique in cliques:
-    remaining = []
-    color = random_color_and_shape()
-    for node in clique:
-      found = False
-      for pair in seatings:
-        for person in pair:
-          if person[0] == node:
-            found = True
-            person[1].append(color)
-
-      if not found and node not in remaining:
-        remaining.append(node)
-
-    seatings = seat(remaining, seatings, color)
+    seatings = seat_clique(clique, seatings)
 
   return seatings
+
+def seat_clique(clique, seatings):
+  remaining = []
+  color = color_and_shape()
+  # cliqueGraph = subgraph.subgraph(clique)
+  # draw_network(cliqueGraph)
+  # print(clique)
+  for node in clique:
+    found = False
+    for pair in seatings:
+      for person in pair:
+        if person[0] == node:
+          found = True
+          person[1].append(color)
+
+    if not found and node not in remaining:
+      remaining.append(node)
+
+  return seat(remaining, seatings, color)
+
+# def order_based_on_overlap(groups: list):
+#   for i in groups:
+#     for j in list(groups):
+#       print(calculate_overlap(i, j))
+  
+#   return groups
+
+# def calculate_overlap(group1: list, group2: list):
+#   overlap_count = 0.0
+#   for i in group1:
+#     if i in group2:
+#       overlap_count +=1
+  
+#   return overlap_count/len(group1) if overlap_count >= 0.0 else 0.0
 
 def seat(people: list, seatings: list, color):
     for person in people:
@@ -91,6 +123,19 @@ def draw_network(G):
     plt.show()
     plt.close()
 
-def random_color_and_shape():
-    return ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]),
-            random.choice([ "circle", "square", "triangle", "triangle-down"])]
+def color_and_shape():
+  global color_seed
+
+  shade = '89abcde'[color_seed % 7]
+  color = ['0', '0', '0']
+
+  if color_seed % 6 < 3:
+    color[color_seed % 3] = shade
+  else:
+    color = [shade, shade, shade]
+    color[color_seed % 3] = '0'
+  
+  shape =  [ "circle", "square", "triangle", "triangle-down", "minus"][color_seed % 5]
+  color_seed += 1
+
+  return ["#"+''.join(color), shape]

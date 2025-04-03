@@ -62,22 +62,27 @@ def seatPeople(subgraph, seatings: list):
 
   for i in range(len(cliques)):
     if lowest_centrality_node in cliques[i]:
-      seat_clique(cliques[i], seatings)
+      seatings, previous_node = seat_clique(subgraph, cliques[i], seatings, None)
       cliques.pop(i)
       break
 
   for clique in cliques:
-    seatings = seat_clique(clique, seatings)
+    seatings, previous_node = seat_clique(subgraph, clique, seatings, previous_node)
 
   return seatings
 
-def seat_clique(clique, seatings):
+def seat_clique(G, clique, seatings, previous_node):
   remaining = []
   color = color_and_shape()
-  # cliqueGraph = subgraph.subgraph(clique)
-  # draw_network(cliqueGraph)
-  # print(clique)
-  for node in clique:
+  node = previous_node
+
+  while len(clique) > 0:
+    if len(clique) > 1:
+      node = find_lowest_degree_closest_neighbor(G, node, clique)
+    else:
+      node = clique[0]
+    clique.pop(clique.index(node))
+
     found = False
     for pair in seatings:
       for person in pair:
@@ -88,22 +93,35 @@ def seat_clique(clique, seatings):
     if not found and node not in remaining:
       remaining.append(node)
 
-  return seat(remaining, seatings, color)
+  return seat(remaining, seatings, color), node
 
-# def order_based_on_overlap(groups: list):
-#   for i in groups:
-#     for j in list(groups):
-#       print(calculate_overlap(i, j))
-  
-#   return groups
+def find_lowest_degree_closest_neighbor(G, node, clique):
+  highest_weight = 0
+  highest_weight_edges = []
 
-# def calculate_overlap(group1: list, group2: list):
-#   overlap_count = 0.0
-#   for i in group1:
-#     if i in group2:
-#       overlap_count +=1
-  
-#   return overlap_count/len(group1) if overlap_count >= 0.0 else 0.0
+  if node:
+    for i in clique:
+      if G.has_edge(node, i):
+        if G.edges[(node, i)]["weight"] > highest_weight:
+          highest_weight_edges = [i]
+          highest_weight = G.edges[(node, i)]["weight"]
+        elif G.edges[(node, i)]["weight"] == highest_weight:
+          highest_weight_edges.append(i)
+
+  if len(highest_weight_edges) == 0:
+    highest_weight_edges = clique
+
+  if len(highest_weight_edges) == 1:
+    return highest_weight_edges[0]
+
+  lowest_degree_node = highest_weight_edges[0]
+  lowest_degree = G.degree(lowest_degree_node)
+
+  for i in highest_weight_edges:
+    if lowest_degree > G.degree(i):
+      lowest_degree_node = i
+
+  return lowest_degree_node
 
 def seat(people: list, seatings: list, color):
     for person in people:

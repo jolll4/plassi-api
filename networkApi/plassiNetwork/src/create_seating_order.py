@@ -65,9 +65,18 @@ def seatPeople(subgraph, seatings: list):
       seatings, previous_node = seat_clique(subgraph, cliques[i], seatings, None)
       cliques.pop(i)
       break
-
-  for clique in cliques:
-    seatings, previous_node = seat_clique(subgraph, clique, seatings, previous_node)
+  
+  while len(cliques) > 0:
+    added = False
+    for i in range(len(cliques)):
+      if previous_node in cliques[i]:
+        seatings, previous_node = seat_clique(subgraph, cliques[i], seatings, previous_node)
+        cliques.pop(i)
+        added = True
+        break
+    if not added:
+      seatings, previous_node = seat_clique(subgraph, cliques[0], seatings, previous_node)
+      cliques.pop(0)
 
   return seatings
 

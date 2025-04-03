@@ -74,6 +74,12 @@
   display: inline-block;
 }
 
+.Minus {
+  margin: auto 0 auto 0.2em;
+  height: 5px;
+  width: 25px;
+}
+
 .RedHighlight {
   color: #aa0000;
 }

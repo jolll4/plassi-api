@@ -2,9 +2,6 @@ from rest_framework.views import View
 from rest_framework.response import Response
 from django.http import *
 from .src.create_seating_order import create_seating_order
-# import sys
-
-# sys.path.insert(0, './src')
 
 class Message(View):
     def get(self, request):

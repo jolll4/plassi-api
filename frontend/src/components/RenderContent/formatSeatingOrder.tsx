@@ -33,6 +33,10 @@ export function formatSeatingOrder(seatingOrder: string): JSX.Element {
                   return (
                     <div className="TriangleDown" style={{ color: color }} />
                   );
+                case "minus":
+                  return (
+                    <div className="Minus" style={{ backgroundColor: color }} />
+                  );
               }
             })}
           </div>

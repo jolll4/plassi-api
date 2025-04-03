@@ -2,7 +2,6 @@ from .create_network import create_network
 
 import networkx as nx
 import matplotlib.pyplot as plt
-import io
 import random
 import json
 
@@ -46,6 +45,8 @@ def cleanAvecs(avecs: list):
   return avecs
 
 def seatGroups(network):
+  global color_seed
+  color_seed = random.randrange(4)
   seatings = []
   for group in nx.connected_components(network):
     seatings = seatPeople(network.subgraph(group), seatings)
@@ -53,25 +54,83 @@ def seatGroups(network):
   return seatings
 
 def seatPeople(subgraph, seatings: list):
-  cliques = nx.find_cliques(subgraph)
+  cliques = list(nx.find_cliques(subgraph))
 
-  for clique in cliques:
-    remaining = []
-    color = random_color_and_shape()
-    for node in clique:
-      found = False
-      for pair in seatings:
-        for person in pair:
-          if person[0] == node:
-            found = True
-            person[1].append(color)
+  degree_centrality = nx.degree_centrality(subgraph)
+  lowest_centralities = {key:val for key,val in degree_centrality.items() if val == min(degree_centrality.values())}
+  lowest_centrality_node = list(lowest_centralities.keys())[0]
 
-      if not found and node not in remaining:
-        remaining.append(node)
-
-    seatings = seat(remaining, seatings, color)
+  for i in range(len(cliques)):
+    if lowest_centrality_node in cliques[i]:
+      seatings, previous_node = seat_clique(subgraph, cliques[i], seatings, None)
+      cliques.pop(i)
+      break
+  
+  while len(cliques) > 0:
+    added = False
+    for i in range(len(cliques)):
+      if previous_node in cliques[i]:
+        seatings, previous_node = seat_clique(subgraph, cliques[i], seatings, previous_node)
+        cliques.pop(i)
+        added = True
+        break
+    if not added:
+      seatings, previous_node = seat_clique(subgraph, cliques[0], seatings, previous_node)
+      cliques.pop(0)
 
   return seatings
+
+def seat_clique(G, clique, seatings, previous_node):
+  remaining = []
+  color = color_and_shape()
+  node = previous_node
+
+  while len(clique) > 0:
+    if len(clique) > 1:
+      node = find_lowest_degree_closest_neighbor(G, node, clique)
+    else:
+      node = clique[0]
+    clique.pop(clique.index(node))
+
+    found = False
+    for pair in seatings:
+      for person in pair:
+        if person[0] == node:
+          found = True
+          person[1].append(color)
+
+    if not found and node not in remaining:
+      remaining.append(node)
+
+  return seat(remaining, seatings, color), node
+
+def find_lowest_degree_closest_neighbor(G, node, clique):
+  highest_weight = 0
+  highest_weight_edges = []
+
+  if node:
+    for i in clique:
+      if G.has_edge(node, i):
+        if G.edges[(node, i)]["weight"] > highest_weight:
+          highest_weight_edges = [i]
+          highest_weight = G.edges[(node, i)]["weight"]
+        elif G.edges[(node, i)]["weight"] == highest_weight:
+          highest_weight_edges.append(i)
+
+  if len(highest_weight_edges) == 0:
+    highest_weight_edges = clique
+
+  if len(highest_weight_edges) == 1:
+    return highest_weight_edges[0]
+
+  lowest_degree_node = highest_weight_edges[0]
+  lowest_degree = G.degree(lowest_degree_node)
+
+  for i in highest_weight_edges:
+    if lowest_degree > G.degree(i):
+      lowest_degree_node = i
+
+  return lowest_degree_node
 
 def seat(people: list, seatings: list, color):
     for person in people:
@@ -91,6 +150,19 @@ def draw_network(G):
     plt.show()
     plt.close()
 
-def random_color_and_shape():
-    return ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]),
-            random.choice([ "circle", "square", "triangle", "triangle-down"])]
+def color_and_shape():
+  global color_seed
+
+  shade = '89abcde'[color_seed % 7]
+  color = ['0', '0', '0']
+
+  if color_seed % 6 < 3:
+    color[color_seed % 3] = shade
+  else:
+    color = [shade, shade, shade]
+    color[color_seed % 3] = '0'
+  
+  shape =  [ "circle", "square", "triangle", "triangle-down", "minus"][color_seed % 5]
+  color_seed += 1
+
+  return ["#"+''.join(color), shape]

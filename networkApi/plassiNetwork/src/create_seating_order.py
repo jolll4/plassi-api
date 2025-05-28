@@ -11,11 +11,18 @@ def create_seating_order(inputData):
   groups = []
 
   data = json.loads(inputData)
+  
+  headers = data[0]
+  firstNameIndex = headers.index("Etunimi")
+  lastNameIndex = headers.index("Sukunimi")
+  avecNameIndex = headers.index("Avec")
+  placementNameIndex = headers.index("Pöytäseurue")
 
   for row in data:
-    people.append(row[0].rstrip())
-    avecs.append([row[0].rstrip(), row[1].rstrip()])
-    groups.append(row[2].rstrip().split(";"))
+    if row[firstNameIndex].rstrip() != "Etunimi":
+      people.append(row[firstNameIndex].rstrip() + " " + row[lastNameIndex].rstrip())
+      avecs.append([row[firstNameIndex].rstrip() + " " + row[lastNameIndex].rstrip(), row[avecNameIndex].rstrip()])
+      groups.append(row[placementNameIndex].rstrip().split(","))
 
   avecs = cleanAvecs(avecs)
 

@@ -89,7 +89,7 @@ def seatPeople(subgraph, seatings: list):
       seatings, previous_node = seat_clique(subgraph, cliques[0], seatings, previous_node)
       cliques.pop(0)
 
-  return seatings
+  return add_subgraph_divider(seatings)
 
 def seat_clique(G, clique, seatings, previous_node):
   remaining = []
@@ -152,6 +152,14 @@ def seat(people: list, seatings: list, color):
         seatings[len(seatings) - 1].append(person_color)
 
     return seatings
+
+def add_subgraph_divider(seatings):
+  if len(seatings[len(seatings) - 1]) == 1:
+    seatings[len(seatings) - 1].append(["-"])
+
+  seatings.append([["-"],["-"]])
+  
+  return seatings
 
 def draw_network(G):
     pos = nx.spring_layout(G, seed=0)

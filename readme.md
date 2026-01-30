@@ -13,6 +13,9 @@ Provide csv data in the format:
 "Artturi","Virtanen","","Innovators"
 ```
 
+<img width="1917" height="996" alt="image" src="https://github.com/user-attachments/assets/7771669f-efcf-4673-aff1-97491bc2ec6f" />
+
+
 Mind that the app doesn't have typo-detection.
 
 ## Running the app

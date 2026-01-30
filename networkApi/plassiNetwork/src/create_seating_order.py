@@ -12,10 +12,21 @@ def create_seating_order(inputData):
 
   data = json.loads(inputData)
 
+  headers = data[0]
+  firstNameIndex = headers.index("Etunimi")
+  lastNameIndex = headers.index("Sukunimi")
+  avecNameIndex = headers.index("Avec")
+  placementNameIndex = headers.index("Pöytäseuruetoive")
+
   for row in data:
-    people.append(row[0].rstrip())
-    avecs.append([row[0].rstrip(), row[1].rstrip()])
-    groups.append(row[2].rstrip().split(";"))
+    if row[firstNameIndex].strip() != "Etunimi":
+      people.append(row[firstNameIndex].strip() + " " + row[lastNameIndex].strip())
+      avecs.append([row[firstNameIndex].strip() + " " + row[lastNameIndex].strip(), row[avecNameIndex].strip()])
+      cleanedGroups = []
+      for i in row[placementNameIndex].split(","):
+        if i.strip() != "":
+          cleanedGroups.append(i.strip())
+      groups.append(cleanedGroups)
 
   avecs = cleanAvecs(avecs)
 
@@ -78,7 +89,7 @@ def seatPeople(subgraph, seatings: list):
       seatings, previous_node = seat_clique(subgraph, cliques[0], seatings, previous_node)
       cliques.pop(0)
 
-  return seatings
+  return add_subgraph_divider(seatings)
 
 def seat_clique(G, clique, seatings, previous_node):
   remaining = []
@@ -141,6 +152,14 @@ def seat(people: list, seatings: list, color):
         seatings[len(seatings) - 1].append(person_color)
 
     return seatings
+
+def add_subgraph_divider(seatings):
+  if len(seatings[len(seatings) - 1]) == 1:
+    seatings[len(seatings) - 1].append(["-"])
+
+  seatings.append([["-"],["-"]])
+  
+  return seatings
 
 def draw_network(G):
     pos = nx.spring_layout(G, seed=0)

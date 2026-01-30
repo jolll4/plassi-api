@@ -9,36 +9,42 @@ export function formatSeatingOrder(seatingOrder: string): JSX.Element {
         formattedSeatingOrder.push(
           <div key={`seat_${person[0].trim()}`} className="RectangleSeat">
             {person[0].trim()}
-            {person[1].map((color_shape: string[]) => {
-              const color = color_shape[0];
-              const shape = color_shape[1];
-              switch (shape) {
-                case "circle":
-                  return (
-                    <div
-                      className="Circle"
-                      style={{ backgroundColor: color }}
-                    />
-                  );
-                case "square":
-                  return (
-                    <div
-                      className="Square"
-                      style={{ backgroundColor: color }}
-                    />
-                  );
-                case "triangle":
-                  return <div className="Triangle" style={{ color: color }} />;
-                case "triangle-down":
-                  return (
-                    <div className="TriangleDown" style={{ color: color }} />
-                  );
-                case "minus":
-                  return (
-                    <div className="Minus" style={{ backgroundColor: color }} />
-                  );
-              }
-            })}
+            {person[1] &&
+              person[1].map((color_shape: string[]) => {
+                const color = color_shape[0];
+                const shape = color_shape[1];
+                switch (shape) {
+                  case "circle":
+                    return (
+                      <div
+                        className="Circle"
+                        style={{ backgroundColor: color }}
+                      />
+                    );
+                  case "square":
+                    return (
+                      <div
+                        className="Square"
+                        style={{ backgroundColor: color }}
+                      />
+                    );
+                  case "triangle":
+                    return (
+                      <div className="Triangle" style={{ color: color }} />
+                    );
+                  case "triangle-down":
+                    return (
+                      <div className="TriangleDown" style={{ color: color }} />
+                    );
+                  case "minus":
+                    return (
+                      <div
+                        className="Minus"
+                        style={{ backgroundColor: color }}
+                      />
+                    );
+                }
+              })}
           </div>
         );
       });

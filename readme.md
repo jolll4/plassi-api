@@ -14,11 +14,12 @@ Artturi,Virtanen,"",Innovators
 Alfred,Nobel,"",Innovators
 Tarja,Halonen,"","Erkki Tuomioja, Barack Obama"
 Erkki,Tuomioja,"",Tarja Halonen
+Henry,Ford,"",Innovators
 ```
 
 Strings that contain `,`, namely the `Pöytäseuruetoive` column, must be closed with `""`. The `Pöytäseurue` column may contain names of individual attendeed or names of friend groups. The app will create a network with the data and then group them to tables based on the subgraps the people are a part of. Mind that the app doesn't have typo-detection.
 
-<img width="1918" height="906" alt="image" src="https://github.com/user-attachments/assets/92888f53-cca4-429a-a7a3-8cf0cd9fb03e" />
+<img width="1918" height="911" alt="image" src="https://github.com/user-attachments/assets/0a536b4c-9b4e-4d8d-b257-e2b5894a0c36" />
 
 ## Running the app
 
@@ -28,15 +29,9 @@ The app uses yarn for frontend package management. Yarn is installed via npm wit
 
 ### Backend:
 
-For the backend you will need python. To run the backend django app, go to `./networkApi` and run
+For the backend you will need python. To run the backend django app, go to `./backend` and run
 
 1. `python3 -m venv env` / `python -m venv env` [for first time setup]
 2. `source env/bin/activate` on linux or `env\Scripts\Activate.ps1` on windows
 3. `pip install -r requirements.txt`
 4. `python manage.py runserver`
-
-### Express backend
-
-The express app is not up to date nor is it being actively developed.
-
-To run the backend express app, go to `./api` and run `yarn build` and `yarn start`.

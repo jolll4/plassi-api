@@ -4,11 +4,14 @@ import { BigButton, ButtonContainer, RedHighlight } from "./Render.styles";
 import { store, newSeats } from "../../App";
 import { useAppDispatch } from "../../hooks";
 import React from "react";
+import { SeatingData } from "./types";
 
-export default function RenderFromCsv() {
+const SeatmentPlanner = () => {
   const [showResult, setShowResult] = React.useState<boolean>(false);
   const [uploadedData, setUploadedData] = React.useState<string[][]>([]);
-  const [outputData, setOutputData] = React.useState<string>("");
+  const [outputData, setOutputData] = React.useState<SeatingData>({
+    tables: [],
+  });
   const [duplicatePeople, setDuplicatePeople] = React.useState<string[]>([]);
   const dispatch = useAppDispatch();
 
@@ -49,12 +52,15 @@ export default function RenderFromCsv() {
   };
 
   const toggleResults = () => {
-    setOutputData(getOutputData());
     setShowResult(!showResult);
   };
 
   const getOutputData = (index: number = -1) => {
-    return store.getState().seats.values.at(index) ?? "";
+    return (
+      store.getState().seats.seatingData.at(index) ?? {
+        tables: [],
+      }
+    );
   };
 
   const sortSeats = async () => {
@@ -75,7 +81,9 @@ export default function RenderFromCsv() {
 
   return (
     <>
-      <input type="file" accept=".csv" onChange={onFileChange} />
+      <div>
+        <input type="file" accept=".csv" onChange={onFileChange} />
+      </div>
       <ButtonContainer>
         <BigButton onClick={createSeating}>Magic</BigButton>
         <BigButton onClick={toggleResults}>Toggle results</BigButton>
@@ -89,4 +97,6 @@ export default function RenderFromCsv() {
       {showResult && <SeatmentChart seatingOrder={outputData} />}
     </>
   );
-}
+};
+
+export default SeatmentPlanner;

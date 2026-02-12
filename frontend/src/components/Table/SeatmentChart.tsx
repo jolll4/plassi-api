@@ -7,51 +7,61 @@ import {
   Triangle,
   TriangleDown,
 } from "./Table.styles";
+import { SeatingData, Person } from "../SeatmentPlanner/types";
 
 type Props = {
-  seatingOrder: string;
+  seatingOrder: SeatingData;
 };
 
 const SeatmentChart = (props: Props) => {
-  console.log(props);
-  return formatSeatingOrder(props.seatingOrder);
-};
-
-const formatSeatingOrder = (seatingOrder: string): JSX.Element => {
+  const seats: JSX.Element[] = [];
   try {
-    const formattedSeatingOrder: JSX.Element[] = [];
-    const seats = JSON.parse(seatingOrder);
-    seats.forEach((pair: any[]) => {
-      pair.forEach((person) => {
-        formattedSeatingOrder.push(
-          <RectangleSeat key={`seat_${person[0].trim()}`}>
-            {person[0].trim()}
-            {person[1] &&
-              person[1].map((color_shape: string[]) => {
-                const color = color_shape[0];
-                const shape = color_shape[1];
-                switch (shape) {
-                  case "circle":
-                    return <Circle style={{ backgroundColor: color }} />;
-                  case "square":
-                    return <Square style={{ backgroundColor: color }} />;
-                  case "triangle":
-                    return <Triangle style={{ color: color }} />;
-                  case "triangle-down":
-                    return <TriangleDown style={{ color: color }} />;
-                  case "minus":
-                    return <Minus style={{ backgroundColor: color }} />;
-                }
-              })}
+    props.seatingOrder.tables.forEach((table, index) => {
+      const seatedTable: JSX.Element[] = [];
+      table.forEach((pair) => {
+        const { left, right } = pair;
+        seatedTable.push(
+          <RectangleSeat key={`seat_${left.name}`}>
+            {left.name}
+            {createSymbols(left)}
           </RectangleSeat>
         );
+        if (right) {
+          seatedTable.push(
+            <RectangleSeat key={`seat_${right.name}`}>
+              {right.name}
+              {createSymbols(right)}
+            </RectangleSeat>
+          );
+        }
       });
+      seats.push(
+        <RectangleTable key={`table_${index}`}>{seatedTable}</RectangleTable>
+      );
     });
-
-    return <RectangleTable>{formattedSeatingOrder}</RectangleTable>;
+    return <>{seats}</>;
   } catch {
     return <div>Oops, something went wrong</div>;
   }
+};
+
+const createSymbols = (person: Person) => {
+  return person.symbols.map((symbol, i) => {
+    const { shape, color } = symbol;
+    const key = `${person.name}_symbol_${i}`;
+    switch (shape) {
+      case "circle":
+        return <Circle key={key} style={{ backgroundColor: color }} />;
+      case "square":
+        return <Square key={key} style={{ backgroundColor: color }} />;
+      case "triangle":
+        return <Triangle key={key} style={{ color: color }} />;
+      case "triangle-down":
+        return <TriangleDown key={key} style={{ color: color }} />;
+      case "minus":
+        return <Minus key={key} style={{ backgroundColor: color }} />;
+    }
+  });
 };
 
 export default SeatmentChart;

@@ -17,6 +17,11 @@ export const BigButton = styled.button`
   height: 60px;
   font-size: 20px;
   margin: 20px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgb(163, 163, 163);
+  }
 `;
 
 export const ButtonContainer = styled.div`

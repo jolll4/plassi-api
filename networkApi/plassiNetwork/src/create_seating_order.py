@@ -61,7 +61,7 @@ def seatGroups(network):
   seatings = []
   for group in nx.connected_components(network):
     seatings = seatPeople(network.subgraph(group), seatings)
-  
+
   return seatings
 
 def seatPeople(subgraph, seatings: list):

@@ -14,6 +14,7 @@ Artturi,Virtanen,"",Innovators
 Alfred,Nobel,"",Innovators
 Tarja,Halonen,"","Erkki Tuomioja, Barack Obama"
 Erkki,Tuomioja,"",Tarja Halonen
+Henry,Ford,"",Innovators
 ```
 
 Strings that contain `,`, namely the `Pöytäseuruetoive` column, must be closed with `""`. The `Pöytäseurue` column may contain names of individual attendeed or names of friend groups. The app will create a network with the data and then group them to tables based on the subgraps the people are a part of. Mind that the app doesn't have typo-detection.

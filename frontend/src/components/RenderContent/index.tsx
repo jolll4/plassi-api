@@ -1,6 +1,6 @@
 import { Component } from "react";
-import { formatSeatingOrder } from "./formatSeatingOrder";
-import "./RenderStyles.css";
+import SeatmentChart from "../Table/SeatmentChart";
+import { InputBoxElements, BigButton } from "../RenderFromCsv/Render.styles";
 
 type RenderProps = {};
 
@@ -55,7 +55,7 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
     return (
       <div>
         <div>
-          <div className="InputBoxElements">
+          <InputBoxElements>
             <p>Attendees:</p>
             <textarea
               id={"inputBox"}
@@ -68,8 +68,8 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
                 });
               }}
             />
-          </div>
-          <div className="InputBoxElements">
+          </InputBoxElements>
+          <InputBoxElements>
             <p>Groups, separate with an empty line:</p>
             <textarea
               id={"inputBox"}
@@ -82,8 +82,8 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
                 });
               }}
             />
-          </div>
-          <div className="InputBoxElements">
+          </InputBoxElements>
+          <InputBoxElements>
             <p>Avecs, pairs on the same line separated with a semicolon (;):</p>
             <textarea
               id={"inputBox"}
@@ -96,13 +96,11 @@ export default class RenderContent extends Component<RenderProps, RenderState> {
                 });
               }}
             />
-          </div>
+          </InputBoxElements>
         </div>
-        <button className="BigButton" onClick={this.onClick}>
-          Magic
-        </button>
+        <BigButton onClick={this.onClick}>Magic</BigButton>
         {this.state.showResult && (
-          <div>{formatSeatingOrder(this.state.outputText)}</div>
+          <SeatmentChart seatingOrder={this.state.outputText} />
         )}
       </div>
     );

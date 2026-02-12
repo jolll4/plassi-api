@@ -1,6 +1,6 @@
 import Papa from "papaparse";
-import { formatSeatingOrder } from "../RenderContent/formatSeatingOrder";
-import "../RenderContent/RenderStyles.css";
+import SeatmentChart from "../Table/SeatmentChart";
+import { BigButton, ButtonContainer, RedHighlight } from "./Render.styles";
 import { store, newSeats } from "../../App";
 import { useAppDispatch } from "../../hooks";
 import React from "react";
@@ -43,18 +43,18 @@ export default function RenderFromCsv() {
   const createSeating = async () => {
     if (!duplicatePeopleInData()) {
       await sortSeats();
-      setOutputData(await getOutputData());
+      setOutputData(getOutputData());
       setShowResult(true);
     }
   };
 
-  const toggleResults = async () => {
-    setOutputData(await getOutputData());
+  const toggleResults = () => {
+    setOutputData(getOutputData());
     setShowResult(!showResult);
   };
 
-  const getOutputData = async (index: number = -1) => {
-    return (await store.getState().seats.values.at(index)) ?? "";
+  const getOutputData = (index: number = -1) => {
+    return store.getState().seats.values.at(index) ?? "";
   };
 
   const sortSeats = async () => {
@@ -74,25 +74,19 @@ export default function RenderFromCsv() {
   };
 
   return (
-    <div>
-      <div>
-        <input type="file" accept=".csv" onChange={onFileChange} />
-      </div>
-      <div className="ButtonContainer">
-        <button className="BigButton" onClick={createSeating}>
-          Magic
-        </button>
-        <button className="BigButton" onClick={toggleResults}>
-          Toggle results
-        </button>
-      </div>
+    <>
+      <input type="file" accept=".csv" onChange={onFileChange} />
+      <ButtonContainer>
+        <BigButton onClick={createSeating}>Magic</BigButton>
+        <BigButton onClick={toggleResults}>Toggle results</BigButton>
+      </ButtonContainer>
       {duplicatePeople.length > 0 && (
         <div>
           <p>People that appear more than once in the input data: </p>
-          <div className="RedHighlight">{duplicatePeople.join(", ")}</div>
+          <RedHighlight>{duplicatePeople.join(", ")}</RedHighlight>
         </div>
       )}
-      {showResult && <div>{formatSeatingOrder(outputData)}</div>}
-    </div>
+      {showResult && <SeatmentChart seatingOrder={outputData} />}
+    </>
   );
 }

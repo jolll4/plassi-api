@@ -18,7 +18,7 @@ Erkki,Tuomioja,"",Tarja Halonen
 
 Strings that contain `,`, namely the `Pöytäseuruetoive` column, must be closed with `""`. The `Pöytäseurue` column may contain names of individual attendeed or names of friend groups. The app will create a network with the data and then group them to tables based on the subgraps the people are a part of. Mind that the app doesn't have typo-detection.
 
-<img width="1916" height="996" alt="image" src="https://github.com/user-attachments/assets/579cd524-422d-4f70-95f5-6ca235788df8" />
+<img width="1918" height="906" alt="image" src="https://github.com/user-attachments/assets/92888f53-cca4-429a-a7a3-8cf0cd9fb03e" />
 
 ## Running the app
 
